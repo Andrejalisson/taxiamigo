@@ -1,0 +1,19 @@
+$("#txtEnderecoChegada").focus(function(event) {
+    var enderecoini = $("#txtEnderecoPartida").val();
+    <?php foreach($carrosdisponiveis as $carrosdisponiveis): ?>
+    var carro<?php echo $carrosdisponiveis->id_carr ?> = new google.maps.LatLng(<?php echo $carrosdisponiveis->lon_carr ?>, <?php echo $carrosdisponiveis->lat_carr ?>);
+    var carros<?php echo $carrosdisponiveis->id_carr ?> = {
+      origin: enderecoini,
+      destination: carro<?php echo $carrosdisponiveis->id_carr ?>,
+      travelMode: google.maps.TravelMode.DRIVING
+    };
+
+    directionsService.route(carros<?php echo $carrosdisponiveis->id_carr ?>, function(result, status<?php echo $carrosdisponiveis->id_carr ?>) {
+      if (status<?php echo $carrosdisponiveis->id_carr ?> == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(result);
+        var distanciacarro<?php echo $carrosdisponiveis->id_carr ?> = result.routes[0].legs[0].distance.value;
+        $("#teste").html("Distancia em metros: "+distanciacarro<?php echo $carrosdisponiveis->id_carr ?>+"Km");
+      }
+    });
+    <?php endforeach ?>
+  });
